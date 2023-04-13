@@ -94,6 +94,35 @@ function createUser(email,username,password){
 
 }
 
+
+
+function createBookmarks(email,bookmarks){
+
+    return new Promise((resolve,reject)=>{ 
+        
+        let values = ""
+        for(const [id,bookmark] of bookmarks.entries()){
+            query+=`(${email},${id},${bookmark}),`
+        }
+        values = values.substring(0,values.length - 1) + " " + "ON DUPLICATE KEY UPDATE INTO;";
+        con.query(`INSERT INTO ${config.BM_TABLE} VALUES ?`,[values],function(err, results) {
+        if(err){
+
+            reject({
+                    authStatus:ERROROCCURRED,
+                    error : err.sqlMessage
+            });
+            
+        }
+        else{
+            return resolve( {
+            authStatus:OPSUCCESS,
+            });
+        }      
+    });
+});
+
+}
 function getBookmarks(email){
 
     return new Promise((resolve,reject)=>{ con.query(`SELECT * FROM ${config.BM_TABLE} where email=?`,[email],function(err, results) {
@@ -109,34 +138,6 @@ function getBookmarks(email){
             return resolve( {
             authStatus:OPSUCCESS,
             bookmarks:results
-            });
-        }      
-    });
-});
-
-}
-
-function createBookmarks(email,bookmarks){
-
-    return new Promise((resolve,reject)=>{ 
-        
-        let values = ""
-        for(const [id,bookmark] of bookmarks.entries()){
-            query+=`(${email},${id},${bookmark}),`
-        }
-        values = values.substring(0,values.length - 1) + " " + "ON DUPLICATE KEY UPDATE INTO;";
-        con.query(`INSERT ${config.BM_TABLE} VALUES ?`,[values],function(err, results) {
-        if(err){
-
-            reject({
-                    authStatus:ERROROCCURRED,
-                    error : err.sqlMessage
-            });
-            
-        }
-        else{
-            return resolve( {
-            authStatus:OPSUCCESS,
             });
         }      
     });
