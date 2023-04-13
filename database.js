@@ -55,8 +55,6 @@ function authUser(email,password){
         else{
             return resolve( {
             authStatus:USERAUTHSUCCESS,
-            bookmarks:results[0].bookmarks,
-            todos:results[0].todos,
             });
         }      
     });
@@ -71,7 +69,7 @@ function checkUser(){
 
 function createUser(email,username,password){
 
-    return new Promise((resolve,reject)=>{ con.query(`INSERT INTO ${config.TABLE}(email,password,username,bookmarks,todos) values(?,?,?,"","")`,[email,password,username],function(err, results) {
+    return new Promise((resolve,reject)=>{ con.query(`INSERT INTO ${config.TABLE}(email,password,username) values(?,?,?)`,[email,password,username],function(err, results) {
         if(err){
             if(err.code === "ER_DUP_ENTRY"){
                 reject({
