@@ -137,4 +137,4 @@ function getTodos(email){
 
 }
 
-module.exports = {authUser:authUser,checkUser:checkUser,createUser:createUser,connectDatabase:connectDatabase,getBookmarks:getBookmarks}
+module.exports = {authUser,checkUser,createUser,connectDatabase,getBookmarks,getTodos}

@@ -1,4 +1,4 @@
-const {authUser,createUser,connectDatabase,getBookmarks} = require( "./database")
+const {authUser,createUser,connectDatabase,getBookmarks,getTodos} = require( "./database")
 
 connectDatabase();
 const express = require("express")
@@ -48,7 +48,7 @@ app.post("/todos",(req,res)=>{
     let email = req.body.email;
     
     console.log(email)
-    getBookmarks(email).then((val)=>res.json(val)).catch((err)=>res.json(err))
+    getTodos(email).then((val)=>res.json(val)).catch((err)=>res.json(err))
 
 })
 
