@@ -1,4 +1,4 @@
-const {authUser,createUser,connectDatabase} = require( "./database")
+const {authUser,createUser,connectDatabase,getBookmarks} = require( "./database")
 
 connectDatabase();
 const express = require("express")
@@ -27,6 +27,28 @@ app.post("/signUp",(req,res)=>{
 
     console.log(email)
     createUser(email,username,password).then((val)=>res.json(val)).catch((err)=>res.json(err))
+
+})
+
+app.post("/bookmarks",(req,res)=>{
+
+    console.log(req.body)
+    let email = req.body.email;
+    
+    console.log(email)
+    getBookmarks(email).then((val)=>res.json(val)).catch((err)=>res.json(err))
+
+
+
+})
+
+app.post("/todos",(req,res)=>{
+
+    console.log(req.body)
+    let email = req.body.email;
+    
+    console.log(email)
+    getBookmarks(email).then((val)=>res.json(val)).catch((err)=>res.json(err))
 
 })
 

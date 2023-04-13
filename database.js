@@ -7,7 +7,7 @@ const USERAUTHSUCCESS = 1200
 const ERROROCCURRED =  1500
 const USERCREATESUCCESS = 1200
 const DUPUSERERROR = 1409
-
+const OPSUCCESS = 2200
 
 
 var con;
@@ -35,7 +35,7 @@ function connectDatabase(){
 }
 function authUser(email,password){
 
-    return new Promise((resolve,reject)=>{ con.query(`SELECT * FROM ${config.TABLE} WHERE email=?`,[email],function(err, results) {
+    return new Promise((resolve,reject)=>{ con.query(`SELECT * FROM ${config.USER_TABLE} WHERE email=?`,[email],function(err, results) {
         if(err){
             reject({
                 authStatus:ERROROCCURRED,
@@ -69,7 +69,7 @@ function checkUser(){
 
 function createUser(email,username,password){
 
-    return new Promise((resolve,reject)=>{ con.query(`INSERT INTO ${config.TABLE}(email,password,username) values(?,?,?)`,[email,password,username],function(err, results) {
+    return new Promise((resolve,reject)=>{ con.query(`INSERT INTO ${config.USER_TABLE}(email,password,username) values(?,?,?)`,[email,password,username],function(err, results) {
         if(err){
             if(err.code === "ER_DUP_ENTRY"){
                 reject({
@@ -94,4 +94,47 @@ function createUser(email,username,password){
 
 }
 
-module.exports = {authUser:authUser,checkUser:checkUser,createUser:createUser,connectDatabase:connectDatabase}
+function getBookmarks(email){
+
+    return new Promise((resolve,reject)=>{ con.query(`SELECT * FROM ${config.BM_TABLE} where email=?`,[email],function(err, results) {
+        if(err){
+
+            reject({
+                    authStatus:ERROROCCURRED,
+                    error : err.sqlMessage
+            });
+            
+        }
+        else{
+            return resolve( {
+            authStatus:OPSUCCESS,
+            bookmarks:results
+            });
+        }      
+    });
+});
+
+}
+
+function getTodos(email){
+
+    return new Promise((resolve,reject)=>{ con.query(`SELECT * FROM ${config.TD_TABLE} where email=?`,[email],function(err, results) {
+        if(err){
+            reject({
+                    authStatus:ERROROCCURRED,
+                    error : err.sqlMessage
+            });
+            
+        }
+        else{
+            return resolve( {
+            authStatus:OPSUCCESS,
+            bookmarks:results
+            });
+        }      
+    });
+});
+
+}
+
+module.exports = {authUser:authUser,checkUser:checkUser,createUser:createUser,connectDatabase:connectDatabase,getBookmarks:getBookmarks}
