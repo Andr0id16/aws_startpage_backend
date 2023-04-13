@@ -34,7 +34,7 @@ app.post("/bookmarks",(req,res)=>{
 
     console.log(req.body)
     let email = req.body.email;
-    let bookmarks = req.body.bookmarks;
+    let bookmarks = req.body.bookMarks;
     
     console.log(email)
     console.log(bookmarks)
