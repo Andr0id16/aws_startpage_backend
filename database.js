@@ -157,10 +157,10 @@ function createTodos(email,todos){
             values+=`("${email}","${todo}",${id}),`
         }
         values = values.substring(0,values.length - 1);
-        console.log(`INSERT IGNORE INTO ${config.TD_TABLE}(email,todo,id) VALUES ${values}`);
-        con.query(`INSERT IGNORE INTO ${config.TD_TABLE}(email,todo,id) VALUES ${values}`,function(err, results) {
+        console.log(`INSERT IGNORE INTO ${config.TD_TABLE}(email,todos,id) VALUES ${values}`);
+        con.query(`INSERT IGNORE INTO ${config.TD_TABLE}(email,todos,id) VALUES ${values}`,function(err, results) {
         if(err){
-            console.log("error")
+            console.log("error",err.sqlMessage)
             reject({
                     authStatus:ERROROCCURRED,
                     error : err.sqlMessage

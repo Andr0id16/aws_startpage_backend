@@ -1,4 +1,4 @@
-const {authUser,createUser,connectDatabase,getBookmarks,createBookmarks,getTodos} = require( "./database")
+const {authUser,createUser,connectDatabase,getBookmarks,createBookmarks,getTodos,createTodos} = require( "./database")
 
 connectDatabase();
 const express = require("express")
@@ -96,7 +96,7 @@ app.get("/todos/:email",(req,res)=>{
         val = val.todos;
         let todos = []
         for(let i of val){
-            todos.push(i.bookmark)
+            todos.push(i.todos)
         }
         res.json(todos)
     }).catch((err)=>res.json(err))
