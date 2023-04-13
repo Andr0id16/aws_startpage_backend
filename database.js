@@ -201,5 +201,45 @@ function getTodos(email){
 }
 
 
+function deleteBookmark(email,id){
+    
+    return new Promise((resolve,reject)=>{ con.query(`DELETE * FROM ${config.BM_TABLE} where email=? AND id=?`,[email,id],function(err, results) {
+        if(err){
 
-module.exports = {authUser,checkUser,createUser,connectDatabase,getBookmarks,getTodos,createBookmarks,createTodos}
+            reject({
+                    authStatus:ERROROCCURRED,
+                    error : err.sqlMessage
+            });
+            
+        }
+        else{
+            return resolve( {
+            authStatus:OPSUCCESS,
+            });
+        }      
+    });
+});
+}
+
+function deleteTodo(email,id){
+    
+    return new Promise((resolve,reject)=>{ con.query(`DELETE * FROM ${config.TD_TABLE} where email=? AND id=?`,[email,id],function(err, results) {
+        if(err){
+
+            reject({
+                    authStatus:ERROROCCURRED,
+                    error : err.sqlMessage
+            });
+            
+        }
+        else{
+            return resolve( {
+            authStatus:OPSUCCESS,
+            });
+        }      
+    });
+});
+}
+
+
+module.exports = {authUser,checkUser,createUser,connectDatabase,getBookmarks,getTodos,createBookmarks,createTodos,deleteBookmark,deleteTodo}

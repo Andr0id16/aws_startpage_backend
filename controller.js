@@ -1,4 +1,4 @@
-const {authUser,createUser,connectDatabase,getBookmarks,createBookmarks,getTodos,createTodos} = require( "./database")
+const {authUser,createUser,connectDatabase,getBookmarks,createBookmarks,getTodos,createTodos, deleteBookmark, deleteTodo} = require( "./database")
 
 connectDatabase();
 const express = require("express")
@@ -105,6 +105,34 @@ app.get("/todos/:email",(req,res)=>{
 
 })
 
+
+app.get("/delete/todos/:email/:id",(req,res)=>{
+
+    let email = req.params.email;
+    let id = req.params.id;
+    
+    console.log(email)
+    deleteTodo(email,id).then((val)=>{
+        res.json(val)
+    }).catch((err)=>res.json(err))
+
+
+
+})
+
+app.get("/delete/bookmarks/:email/:id",(req,res)=>{
+
+    let email = req.params.email;
+    let id = req.params.id;
+    
+    console.log(email)
+    deleteBookmark(email,id).then((val)=>{
+        res.json(val)
+    }).catch((err)=>res.json(err))
+
+
+
+})
 
 
 app.listen(PORT, ()=>{
