@@ -202,4 +202,4 @@ function getTodos(email){
 
 
 
-module.exports = {authUser,checkUser,createUser,connectDatabase,getBookmarks,getTodos,createBookmarks,createTodos,getTodos}
+module.exports = {authUser,checkUser,createUser,connectDatabase,getBookmarks,getTodos,createBookmarks,createTodos}
