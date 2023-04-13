@@ -147,18 +147,20 @@ function getBookmarks(email){
 });
 
 }
+
 function createTodos(email,todos){
 
     return new Promise((resolve,reject)=>{ 
         
         let values = ""
         for(const [id,todo] of todos.entries()){
-            query+=`(${email},${id},${todo}),`
+            values+=`("${email}","${todo}",${id}),`
         }
-        values = values.substring(0,values.length - 1) + " " + "ON DUPLICATE KEY UPDATE INTO;";
-        con.query(`INSERT ${config.TD_TABLE} VALUES ${values}`,function(err, results) {
+        values = values.substring(0,values.length - 1);
+        console.log(`INSERT IGNORE INTO ${config.TD_TABLE}(email,todo,id) VALUES ${values}`);
+        con.query(`INSERT IGNORE INTO ${config.TD_TABLE}(email,todo,id) VALUES ${values}`,function(err, results) {
         if(err){
-
+            console.log("error")
             reject({
                     authStatus:ERROROCCURRED,
                     error : err.sqlMessage
@@ -166,7 +168,9 @@ function createTodos(email,todos){
             
         }
         else{
-            return resolve( {
+            console.log("success")
+
+            resolve( {
             authStatus:OPSUCCESS,
             });
         }      
@@ -178,6 +182,7 @@ function getTodos(email){
 
     return new Promise((resolve,reject)=>{ con.query(`SELECT * FROM ${config.TD_TABLE} where email=?`,[email],function(err, results) {
         if(err){
+
             reject({
                     authStatus:ERROROCCURRED,
                     error : err.sqlMessage
@@ -195,4 +200,6 @@ function getTodos(email){
 
 }
 
-module.exports = {authUser,checkUser,createUser,connectDatabase,getBookmarks,getTodos,createBookmarks}
+
+
+module.exports = {authUser,checkUser,createUser,connectDatabase,getBookmarks,getTodos,createBookmarks,createTodos,getTodos}

@@ -43,6 +43,7 @@ app.post("/bookmarks",(req,res)=>{
 
 
 })
+
 app.get("/bookmarks/:email",(req,res)=>{
 
     let email = req.params.email;
@@ -62,15 +63,48 @@ app.get("/bookmarks/:email",(req,res)=>{
 
 })
 
+// app.post("/todos",(req,res)=>{
+
+//     console.log(req.body)
+//     let email = req.body.email;
+    
+//     console.log(email)
+//     getTodos(email).then((val)=>res.json(val)).catch((err)=>res.json(err))
+
+// })
+
 app.post("/todos",(req,res)=>{
 
     console.log(req.body)
     let email = req.body.email;
+    let todos = req.body.todos;
     
     console.log(email)
-    getTodos(email).then((val)=>res.json(val)).catch((err)=>res.json(err))
+    console.log(todos)
+    createTodos(email,todos).then((val)=>res.json(val)).catch((err)=>res.json(err))
+
+
 
 })
+app.get("/todos/:email",(req,res)=>{
+
+    let email = req.params.email;
+    
+    console.log(email)
+    getTodos(email).then((val)=>{
+        console.log(val)
+        val = val.todos;
+        let todos = []
+        for(let i of val){
+            todos.push(i.bookmark)
+        }
+        res.json(todos)
+    }).catch((err)=>res.json(err))
+
+
+
+})
+
 
 
 app.listen(PORT, ()=>{
