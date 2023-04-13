@@ -203,7 +203,7 @@ function getTodos(email){
 
 function deleteBookmark(email,id){
     
-    return new Promise((resolve,reject)=>{ con.query(`DELETE * FROM ${config.BM_TABLE} where email=? AND id=?`,[email,id],function(err, results) {
+    return new Promise((resolve,reject)=>{ con.query(`DELETE FROM ${config.BM_TABLE} where email=? AND id=?`,[email,id],function(err, results) {
         if(err){
 
             reject({
@@ -223,7 +223,7 @@ function deleteBookmark(email,id){
 
 function deleteTodo(email,id){
     
-    return new Promise((resolve,reject)=>{ con.query(`DELETE * FROM ${config.TD_TABLE} where email=? AND id=?`,[email,id],function(err, results) {
+    return new Promise((resolve,reject)=>{ con.query(`DELETE FROM ${config.TD_TABLE} where email=? AND id=?`,[email,id],function(err, results) {
         if(err){
 
             reject({
