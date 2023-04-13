@@ -1,4 +1,4 @@
-const {authUser,createUser,connectDatabase,getBookmarks,getTodos} = require( "./database")
+const {authUser,createUser,connectDatabase,getBookmarks,createBookmarks,getTodos} = require( "./database")
 
 connectDatabase();
 const express = require("express")
@@ -31,6 +31,19 @@ app.post("/signUp",(req,res)=>{
 })
 
 app.post("/bookmarks",(req,res)=>{
+
+    console.log(req.body)
+    let email = req.body.email;
+    let bookmarks = req.body.bookmarks;
+    
+    console.log(email)
+    console.log(bookmarks)
+    createBookmarks(email,bookmarks).then((val)=>res.json(val)).catch((err)=>res.json(err))
+
+
+
+})
+app.get("/bookmarks",(req,res)=>{
 
     console.log(req.body)
     let email = req.body.email;
