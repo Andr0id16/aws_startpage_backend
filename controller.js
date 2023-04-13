@@ -43,13 +43,20 @@ app.post("/bookmarks",(req,res)=>{
 
 
 })
-app.get("/bookmarks",(req,res)=>{
+app.get("/bookmarks/:email",(req,res)=>{
 
-    console.log(req.body)
-    let email = req.body.email;
+    let email = req.params.email;
     
     console.log(email)
-    getBookmarks(email).then((val)=>res.json(val)).catch((err)=>res.json(err))
+    getBookmarks(email).then((val)=>{
+        console.log(val)
+        val = val.bookmarks;
+        let bookmarks = []
+        for(let i of val){
+            bookmarks.push(i.bookmark)
+        }
+        res.json(bookmarks)
+    }).catch((err)=>res.json(err))
 
 
 

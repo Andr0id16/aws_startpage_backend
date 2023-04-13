@@ -48,12 +48,12 @@ function authUser(email,password){
             }); 
         }
         else if(results[0].password != password){
-            return reject({
+            reject({
                 authStatus:USERPASSWORDINCORRECT
             });
         }
         else{
-            return resolve( {
+            resolve( {
             authStatus:USERAUTHSUCCESS,
             });
         }      
@@ -85,7 +85,7 @@ function createUser(email,username,password){
             }
         }
         else{
-            return resolve( {
+            resolve( {
             authStatus:USERCREATESUCCESS,
             });
         }      
@@ -102,12 +102,13 @@ function createBookmarks(email,bookmarks){
         
         let values = ""
         for(const [id,bookmark] of bookmarks.entries()){
-            query+=`(${email},${id},${bookmark}),`
+            values+=`("${email}","${bookmark}",${id}),`
         }
-        values = values.substring(0,values.length - 1) + " " + "ON DUPLICATE KEY UPDATE INTO;";
-        con.query(`INSERT INTO ${config.BM_TABLE} VALUES ?`,[values],function(err, results) {
+        values = values.substring(0,values.length - 1);
+        console.log(`INSERT IGNORE INTO ${config.BM_TABLE}(email,bookmark,id) VALUES ${values}`);
+        con.query(`INSERT IGNORE INTO ${config.BM_TABLE}(email,bookmark,id) VALUES ${values}`,function(err, results) {
         if(err){
-
+            console.log("error")
             reject({
                     authStatus:ERROROCCURRED,
                     error : err.sqlMessage
@@ -115,7 +116,9 @@ function createBookmarks(email,bookmarks){
             
         }
         else{
-            return resolve( {
+            console.log("success")
+
+            resolve( {
             authStatus:OPSUCCESS,
             });
         }      
@@ -153,7 +156,7 @@ function createTodos(email,todos){
             query+=`(${email},${id},${todo}),`
         }
         values = values.substring(0,values.length - 1) + " " + "ON DUPLICATE KEY UPDATE INTO;";
-        con.query(`INSERT ${config.TD_TABLE} VALUES ?`,[values],function(err, results) {
+        con.query(`INSERT ${config.TD_TABLE} VALUES ${values}`,function(err, results) {
         if(err){
 
             reject({
